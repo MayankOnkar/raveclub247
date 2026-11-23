@@ -1,7 +1,121 @@
 
+import { useState, useEffect } from 'react'
 import './App.css'
 
+import exp1 from './assets/images/experience/exp1.jpeg'
+import exp2 from './assets/images/experience/exp2.jpeg'
+import exp3 from './assets/images/experience/exp3.jpeg'
+import exp4 from './assets/images/experience/exp4.jpeg'
+import exp5 from './assets/images/experience/exp5.jpeg'
+
+import image1 from './assets/images/hero/image1.jpeg'
+import image2 from './assets/images/hero/image2.jpeg'
+import image3 from './assets/images/hero/image3.jpg'
+import image4 from './assets/images/hero/image4.jpeg'
+
+const heroImages = [image1, image2, image3, image4]
+
+const experienceSlides = [
+  {
+    image: exp1,
+    quote: "WE DON'T FOLLOW THE BEAT. WE BECOME IT.",
+    subtitle: "FEEL THE MUSIC. LIVE THE MOMENT.",
+  },
+  {
+    image: exp2,
+    quote: "LOST IN THE MUSIC. FOUND IN THE MOMENT.",
+    subtitle: "WHERE EVERY BEAT TELLS A STORY.",
+  },
+  {
+    image: exp3,
+    quote: "STRANGERS BY DAY. FAMILY BY NIGHT.",
+    subtitle: "A COMMUNITY UNITED BY SOUND.",
+  },
+  {
+    image: exp4,
+    quote: "ONE SOUND. A MILLION CONNECTIONS.",
+    subtitle: "MORE THAN MUSIC. IT'S A MOVEMENT.",
+  },
+  {
+    image: exp5,
+    quote: "LIVE LOUD. FEEL DEEP. RAVE FOREVER.",
+    subtitle: "THIS IS THE RAVECLUB247 EXPERIENCE.",
+  },
+]
+
+function ExperienceSection() {
+  const [activeSlide, setActiveSlide] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveSlide((previous) =>
+        (previous + 1) % experienceSlides.length
+      )
+    }, 5500)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <section className="experience" id="experience">
+
+      <div className="experience-background">
+        {experienceSlides.map((slide, index) => (
+          <div
+            key={slide.image}
+            className={`experience-slide ${
+              activeSlide === index ? 'active' : ''
+            }`}
+            style={{
+              backgroundImage: `url(${slide.image})`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="experience-overlay"></div>
+
+      <div className="experience-content">
+        <p className="eyebrow">
+          THE RAVECLUB247 EXPERIENCE
+        </p>
+
+        <h2 key={activeSlide}>
+          {experienceSlides[activeSlide].quote}
+        </h2>
+
+        <p className="experience-subtitle">
+          {experienceSlides[activeSlide].subtitle}
+        </p>
+
+        <div className="experience-indicator">
+          <span>
+            {String(activeSlide + 1).padStart(2, '0')}
+          </span>
+          <span className="indicator-line"></span>
+          <span>
+            {String(experienceSlides.length).padStart(2, '0')}
+          </span>
+        </div>
+      </div>
+
+    </section>
+  )
+}
+
 function App() {
+  const [currentImage, setCurrentImage] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((previousImage) =>
+        (previousImage + 1) % heroImages.length
+      )
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <div className="app">
 
@@ -24,6 +138,20 @@ function App() {
 
       {/* Hero Section */}
       <main className="hero">
+
+        {/* Rotating Background */}
+        <div className="hero-background">
+          {heroImages.map((image, index) => (
+            <div
+              key={image}
+              className={`hero-slide ${
+                currentImage === index ? 'active' : ''
+              }`}
+              style={{ backgroundImage: `url(${image})` }}
+            />
+          ))}
+        </div>
+
         <div className="hero-content">
 
           <p className="eyebrow">
@@ -62,6 +190,10 @@ function App() {
           <span>24 HOURS. 7 DAYS. ONE FREQUENCY.</span>
         </div>
       </main>
+
+
+      {/* Experience */}
+      <ExperienceSection />      
 
       {/* Genres */}
       <section className="genres" id="discover">
